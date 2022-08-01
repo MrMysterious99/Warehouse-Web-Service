@@ -6,6 +6,8 @@ import re
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, create_refresh_token, get_jwt, \
     get_jwt_identity
 from sqlalchemy import and_
+from decorators import roleCheck
+
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
@@ -149,6 +151,7 @@ def refresh():
 
 @app.route("/delete", methods=["POST"])
 @jwt_required()
+@roleCheck("administrator")
 def delete():
     identity = get_jwt_identity()
     if identity != "admin@admin.com":
